@@ -32,7 +32,7 @@ condor-master condor-compute condor-submit:
 	   gcloud compute images create $@  \
 	     --source-disk $@-template   \
 	     --source-disk-zone us-east1-b   \
-	     --family htcondor-debian ;\
+	     --family htcondor-centos ;\
 	   gcloud compute instances delete --quiet --zone=us-east1-b $@-template ;\
 	else \
 	   echo "$@ image already exists"; \
