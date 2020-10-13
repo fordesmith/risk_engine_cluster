@@ -50,8 +50,9 @@ condor_status
 ```
 
 
-5. Submit the job to htcondor-submit host:
+5. Submit the job to htcondor-submit host - At any time, you can check on the status of your jobs with the condor_q command:
 
 ```
 condor_submit risk-job-submit-job
+condor_q
 ```
