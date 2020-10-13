@@ -73,12 +73,6 @@ createjoblist:
 	@echo "\n"
 	@echo "done..."
 
-rmbq:
-	@echo "deleting dataset from bq: ${GOOGLE_CLOUD_PROJECT}:montecarlo_outputs"
-	bq rm -rf ${GOOGLE_CLOUD_PROJECT}:montecarlo_outputs
-	@echo "\n"
-	@echo "done..."
-
 
 clean:
 	rm link.file WIKI_PRICES*.zip WIKI_PRICES*.csv 
