@@ -12,7 +12,7 @@ The **cluster** folder has a makefile that drives most of the commands you perfo
 
 * startup-scripts/:  holds additional scripts for creating the necessary system images for the compute cluster.
 
-Key steps, once the code has been compiled and a machine image has been created:
+Key steps, once the code has been compiled, a machine image has been created and you have the gcloud sdk and a service account:
 
 1. Clone the GitHub repository that contains the sample code and change directories to the folder the repository was cloned to:
 

@@ -42,7 +42,7 @@ def main(job_date, cpty):
     os.makedirs("Market", mode=0o777, exist_ok=False)
     os.makedirs("Output", mode=0o777, exist_ok=False)
 
-    storage_client = storage.Client.from_service_account_json('/home/forde_a_smith/vannarho-9ce81e1e196e.json')
+    storage_client = storage.Client.from_service_account_json('/home/forde_a_smith/vannarho-fb3267082c74.json')
 
     risk_engine = RiskEngine(sys.argv[1] if len(sys.argv)>1 else False)
     risk_engine.risk_exe = '/home/forde_a_smith/risk_engine/build/App/ore'
