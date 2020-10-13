@@ -21,7 +21,7 @@ yum update -y \
         swig \
         epel-release \
         gcc-c++ \
-        wget \
+        wget
 
 
 yum clean all
