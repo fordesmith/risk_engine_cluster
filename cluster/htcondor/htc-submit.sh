@@ -1,1 +1,2 @@
-sudo python3 start_job.py '09-10-20' 'cpty_01'
+#!/bin/bash
+sudo python3 start_job.py $1 $2

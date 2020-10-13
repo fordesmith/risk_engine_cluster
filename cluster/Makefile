@@ -31,7 +31,7 @@ condor-master condor-compute condor-submit:
 	   echo ""; \
 	   gcloud compute images create $@  \
 	     --source-disk $@-template   \
-	     --source-disk-zone us-east1-b   \
+	     --source-disk-zone us-east1-b
 	     --family htcondor-centos ;\
 	   gcloud compute instances delete --quiet --zone=us-east1-b $@-template ;\
 	else \
