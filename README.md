@@ -42,7 +42,7 @@ make createcluster
 ```
 
 
-4. When the process is complete, use ssh to log into the condor-submit host (this also copies over the key job files), determine how many cores are available in the cluster:
+4. When the process is complete, use the makefile to log into the condor-submit host (this also copies over the key job files), determine how many cores are available in the cluster:
 
 ```
 make submit-ssh job_list=XXX (e.g. '09-10-20')
@@ -50,10 +50,8 @@ condor_status
 ```
 
 
-5. Copy the application data and code to the htcondor-submit host:
+5. Submit the job to htcondor-submit host:
 
 ```
-gcloud compute scp htcondor/* model/* condor-submit:
-gcloud compute ssh condor-submit
 condor_submit risk-job-submit-job
 ```
