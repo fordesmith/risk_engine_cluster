@@ -10,7 +10,7 @@ The **cluster** folder has a makefile that drives most of the commands you perfo
 
 * model/: holds the file that kicks off the risk job. 
 
-* startup-scripts/:  holds additional scripts for creating the necessary system images for the compute cluster.
+* startup-scripts/:  holds additional scripts for creating the necessary system images for the compute cluster (based on Centos7).
 
 Key steps, once the code has been compiled, a machine image has been created and you have the gcloud sdk and a service account:
 
