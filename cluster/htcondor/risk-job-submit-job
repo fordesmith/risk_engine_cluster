@@ -1,0 +1,12 @@
+
+# htcondor submit script for risk job
+executable              = htc-submit.sh
+arguments               = $(Process)
+transfer_input_files    = start_job.py, risk_helper.py, vannarho-9ce81e1e196e.json, risk_engine_debian
+should_transfer_files   = IF_NEEDED
+Transfer_Output_Files   = ""
+when_to_transfer_output = ON_EXIT
+log                     = run.$(Process).log
+Error   = err.$(Process)                                                
+Output  = out.$(Process) 
+queue 4

@@ -1,0 +1,1 @@
+sudo python3 start_job.py '09-10-20' 'cpty_01'
