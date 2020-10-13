@@ -11,7 +11,7 @@ info:
     Creates one master node, one job submission node, and n compute nodes
     through a managed instance group.
 
-    The base image is Debian 10, and the configuration installs the latest
+    The base image is Centos7, and the configuration installs the latest
     production version of HTCondor.
 
 

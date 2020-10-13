@@ -53,37 +53,25 @@ destroycluster:
 	@echo "destroying the condor cluster"
 	gcloud deployment-manager deployments delete condor-cluster
 
-ssh:
-ifeq ($(bucketname),)
-	@echo "set the bucketname in order to copy some of the data and model files to the submit host"
-	@echo "  make sshtocluster bucketname=<some bucket name>"
-	gcloud compute ssh condor-submit
-else
-	@echo "using ${bucketname}"
+submit-ssh:
 	@echo "before sshing to the submit host, let me copy some of the files there to make"
 	@echo "it easier for you."
 	@echo "  - copying the model"
-	gcloud compute ssh condor-submit --command "gsutil cp gs://${bucketname}/model/* ."
+	@echo "creating job list for $(job_date)"
+	gsutil cp gs://pfe_job_specs/$(job_date)/job_list.txt ./htcondor/
 	@echo "  - copying the datafiles"
-	gcloud compute ssh condor-submit --command "gsutil cp gs://${bucketname}/data/* ./"
-	@echo "  - copying the condor submit files templates"
-	gcloud compute ssh condor-submit --command "gsutil cp gs://${bucketname}/htcondor/* ."
-	@echo "now just sshing"
-	gcloud compute ssh condor-submit
-endif
-
-bq: 
-ifeq ($(bucketname),)
-	@echo "to upload result file to bigquery, rerun this command but add the bucketname"
-	@echo "  make bq bucketname=<some bucket name>"
-else
-	@echo "loading data from gs://${bucketname}/output/*.csv to bigquery table varBQTable"
-	-bq mk montecarlo_outputs
-	bq load --autodetect --source_format=CSV ${GOOGLE_CLOUD_PROJECT}:montecarlo_outputs.vartable gs://${bucketname}/output/*.csv 
-	cat bq-aggregate.sql | bq query --destination_table montecarlo_outputs.portfolio > /dev/null
+	gcloud compute ssh condor-submit --command "gsutil cp ./model/* ."
+	gcloud compute ssh condor-submit --command "gsutil cp ./htcondor/* ."
 	@echo "\n"
 	@echo "done..."
-endif
+	@echo "now just sshing"
+	gcloud compute ssh condor-submit
+
+createjoblist:
+	@echo "creating job list for $(job_date)"
+	gsutil cp gs://pfe_job_specs/$(job_date)/job_list.txt ./htcondor/
+	@echo "\n"
+	@echo "done..."
 
 rmbq:
 	@echo "deleting dataset from bq: ${GOOGLE_CLOUD_PROJECT}:montecarlo_outputs"

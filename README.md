@@ -42,10 +42,10 @@ make createcluster
 ```
 
 
-4. When the process is complete, use ssh to log into the condor-submit host, determine how many cores are available in the cluster:
+4. When the process is complete, use ssh to log into the condor-submit host (this also copies over the key job files), determine how many cores are available in the cluster:
 
 ```
-gcloud compute ssh condor-submit
+make submit-ssh job_list=XXX (e.g. '09-10-20')
 condor_status
 ```
 
