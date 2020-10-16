@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-# Shell script for compiling risk engine on centos7
+# Shell script for compiling risk engine on centos7or8
 
 
 # ----------------------------------------------------------------------
@@ -10,23 +10,26 @@
 echo "Install Devtools"
 yum update -y \
     && yum install -y \
-        build-essential \
-        python3-dev \
+        python3-devel \
         python3-pip \
-        libhdf5-serial-dev \
-        software-properties-common \
+        hdf5-devel \
         cmake3 \
         git \
         ninja-build \
         swig \
         epel-release \
         gcc-c++ \
-        wget
+        wget \
+        libtool \
+        glibc-devel \
+        doxygen \
+        graphviz
 
+yum groupinstall -y 'Development Tools'
 
 yum clean all
 
-pip3 install ipywidgets \
+yes | pip3 install ipywidgets \
         pandas \
         matplotlib \
         jupyter \
@@ -54,6 +57,7 @@ cd boost_1_*
 
 export BOOST=/opt/boost/
 export BOOST_LIBS=/opt/boost/lib
+export BOOST_LIBRARYDIR=/opt/boost/lib
 export BOOST_INCLUDES=/opt/boost/includes
 
 yum install -y doxygen
@@ -99,17 +103,33 @@ git submodule update
 mkdir build
 cd build
 
-export PYTHON_INCLUDE DIR=/usr/include/python3.7
-export PYTHON_LIBRARY=/usr/lib/python3.7
-export BOOST_LIBRARYDIR=$BOOST
+export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
+export PYTHON_LIBRARY=/usr/lib64/libpython3.so
 export BOOST_ROOT=$BOOST
 export ORE=/home/forde_a_smith/risk_engine
 
 set LANG and LC ALL to en US.UTF-8
 set LC NUMERIC to C.
 
+# cmake3 -G Ninja ..
 
-cmake -G Ninja ..
+cmake3 -G Ninja \
+-D ORE=$ORE \
+-D BOOST_ROOT=$BOOST \
+-D BOOST_LIBRARYDIR=$BOOST_LIBRARYDIR \
+-D PYTHON_LIBRARY=$PYTHON_LIBRARY \
+-D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR \
+..
+
+cmake3 \
+-D ORE=$ORE \
+-D BOOST_ROOT=$BOOST \
+-D BOOST_LIBRARYDIR=$BOOST_LIBRARYDIR \
+-D PYTHON_LIBRARY=$PYTHON_LIBRARY \
+-D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR \
+..
+
+cmake -j17
 
 ninja
 

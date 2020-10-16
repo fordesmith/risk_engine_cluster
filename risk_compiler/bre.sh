@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-# Shell script for compiling risk engine on centos7
+# Shell script for compiling risk engine on centos7or8
 
 
 # ----------------------------------------------------------------------
@@ -10,11 +10,9 @@
 echo "Install Devtools"
 yum update -y \
     && yum install -y \
-        build-essential \
-        python3-dev \
+        python3-devel \
         python3-pip \
-        libhdf5-serial-dev \
-        software-properties-common \
+        hdf5-devel \
         cmake3 \
         git \
         ninja-build \
@@ -24,13 +22,16 @@ yum update -y \
         wget \
         libtool \
         gcc \
-        glibc-devel
+        glibc-devel \
+        doxygen \
+        graphviz
 
-yum groupinstall 'Development Tools'
+
+yum groupinstall -y 'Development Tools'
 
 yum clean all
 
-pip3 install ipywidgets \
+yes | pip3 install ipywidgets \
         pandas \
         matplotlib \
         jupyter \
@@ -52,7 +53,7 @@ jupyter_dashboards quick-setup --sys-prefix
 echo "Install Boost"
 wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.gz
 tar -xzf boost_1_*
-cd boost_1_*
+cd boost_1_63_0
 ./bootstrap.sh --prefix=/opt/boost
 ./b2 install --prefix=/opt/boost --with=all
 
@@ -61,8 +62,6 @@ export BOOST_LIBS=/opt/boost/lib
 export BOOST_LIBRARYDIR=/opt/boost/lib
 export BOOST_INCLUDES=/opt/boost/includes
 
-yum install -y doxygen
-yum install -y graphviz
 cd ../
 
 # ----------------------------------------------------------------------
