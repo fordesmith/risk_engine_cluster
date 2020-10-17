@@ -11,4 +11,4 @@ resources:
     pvmcount: 1
     zone: us-east1-b
     email: someone@somewhere.com
-    instancetype: e2-highmem-16
+    instancetype: e2-highmem-4

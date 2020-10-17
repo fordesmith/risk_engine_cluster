@@ -1,4 +1,3 @@
-
 show:
 	cat README.md
 
@@ -17,7 +16,7 @@ condor-master condor-compute condor-submit:
 	   gcloud beta compute instances create $@-template \
 	     --project vannarho \
 	     --zone us-east1-b \
-	     --source-machine-image projects/vannarho/global/machineImages/centos7-risk-engine ;\
+	     --source-machine-image projects/vannarho/global/machineImages/c7-re-img ;\
 	   echo "" ;\
 	   echo "- starting bootstrap $@" ;\
 	   echo ""; \
@@ -31,7 +30,7 @@ condor-master condor-compute condor-submit:
 	   echo ""; \
 	   gcloud compute images create $@  \
 	     --source-disk $@-template   \
-	     --source-disk-zone us-east1-b
+	     --source-disk-zone us-east1-b \
 	     --family htcondor-centos ;\
 	   gcloud compute instances delete --quiet --zone=us-east1-b $@-template ;\
 	else \
@@ -40,9 +39,9 @@ condor-master condor-compute condor-submit:
 
 
 deleteimages:
-	-gcloud compute images delete --quiet condor-master
-	-gcloud compute images delete --quiet condor-compute
-	-gcloud compute images delete --quiet condor-submit
+	gcloud compute images delete --quiet condor-master
+	gcloud compute images delete --quiet condor-compute
+	gcloud compute images delete --quiet condor-submit
 
 
 createcluster:
