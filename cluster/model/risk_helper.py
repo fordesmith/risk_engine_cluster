@@ -219,7 +219,7 @@ class RiskEngine(object):
             exit_code = subprocess.call([self.risk_exe, xml])
         except:
             print_on_console("Error running risk engine")
-        return exit_code
+
 
 def run_example(example):
     current_dir = os.getcwd()
