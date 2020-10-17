@@ -2,7 +2,7 @@
 # htcondor submit script for risk job
 executable              = htc-submit.sh
 arguments               = $(job_date) $(cpty)
-transfer_input_files    = start_job.py, risk_helper.py
+transfer_input_files    = start_job.py, risk_helper.py, vannarho-fb3267082c74.json
 should_transfer_files   = IF_NEEDED
 Transfer_Output_Files   = ""
 when_to_transfer_output = ON_EXIT

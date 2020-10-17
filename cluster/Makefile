@@ -75,6 +75,12 @@ createjoblist:
 
 setup:
 	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "git clone https://github.com/fordesmith/risk_engine_cluster.git source"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp ./cluster/"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "export SUBMIT_ROOT=$(pwd)"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp $SUBMIT_ROOT/source/cluster/htcondor/* $SUBMIT_ROOT"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp $SUBMIT_ROOT/source/cluster/model/* $SUBMIT_ROOT"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "sudo cp /home/forde_a_smith/vannarho-fb3267082c74.json $SUBMIT_ROOT"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit
+
+
 
 
