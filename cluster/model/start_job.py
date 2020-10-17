@@ -34,9 +34,9 @@ def upload_blob(bucket_name, source_dir, destination_blob_folder,storage_client)
 
 def main(job_date, cpty):
     base_path = os.getcwd() + "/"
-    os.makedirs("Input", mode=0o777, exist_ok=False)
-    os.makedirs("Market", mode=0o777, exist_ok=False)
-    os.makedirs("Output", mode=0o777, exist_ok=False)
+    os.makedirs("Input", mode=0o777, exist_ok=True)
+    os.makedirs("Market", mode=0o777, exist_ok=True)
+    os.makedirs("Output", mode=0o777, exist_ok=True)
 
     storage_client = storage.Client.from_service_account_json('/home/forde_a_smith/vannarho-fb3267082c74.json')
 
