@@ -2,6 +2,7 @@
 
 # Shell script for compiling risk engine on centos7or8
 
+if [ -z ${var+x} ]; then echo "Setting up core risk engine"; else echo "Setting up core risk engine and swig wrappers"; fi
 
 # ----------------------------------------------------------------------
 #              Install Dev Tools
@@ -95,47 +96,34 @@ ctest3 -j17
 #              Make swig - TO DO - FIX
 # ----------------------------------------------------------------------
 
-cd ../../
-git clone https://github.com/fordesmith/ORE-SWIG.git risk_swig
-cd risk_swig
-git submodule init
-git submodule update
-mkdir build
-cd build
+if [ $var = "swig" ]
+ then
+  echo "Compiling swig wrappers"
+  cd ../../
+  git clone https://github.com/fordesmith/ORE-SWIG.git risk_swig
+  cd risk_swig
+  git submodule init
+  git submodule update
+  mkdir build
+  cd build
+  export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
+  export PYTHON_LIBRARY=/usr/lib64/libpython3.so
+  export BOOST_ROOT=$BOOST
+  export ORE=/home/forde_a_smith/risk_engine
+  set LANG and LC ALL to en US.UTF-8
+  set LC NUMERIC to C.
+  cmake3 -G Ninja \
+  -D ORE=$ORE \
+  -D BOOST_ROOT=$BOOST \
+  -D BOOST_LIBRARYDIR=$BOOST_LIBRARYDIR \
+  -D PYTHON_LIBRARY=$PYTHON_LIBRARY \
+  -D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR \
+  ..
+  ninja
+  export PYTHONPATH=/home/forde_a_smith/risk_swig/build/OREAnalytics-SWIG/Python
+  cd ../
+  cd /OREAnalytics/Python/Examples
+  python3 ore.py;
+fi
 
-export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
-export PYTHON_LIBRARY=/usr/lib64/libpython3.so
-export BOOST_ROOT=$BOOST
-export ORE=/home/forde_a_smith/risk_engine
-
-set LANG and LC ALL to en US.UTF-8
-set LC NUMERIC to C.
-
-# cmake3 -G Ninja ..
-
-cmake3 -G Ninja \
--D ORE=$ORE \
--D BOOST_ROOT=$BOOST \
--D BOOST_LIBRARYDIR=$BOOST_LIBRARYDIR \
--D PYTHON_LIBRARY=$PYTHON_LIBRARY \
--D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR \
-..
-
-cmake3 \
--D ORE=$ORE \
--D BOOST_ROOT=$BOOST \
--D BOOST_LIBRARYDIR=$BOOST_LIBRARYDIR \
--D PYTHON_LIBRARY=$PYTHON_LIBRARY \
--D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR \
-..
-
-cmake -j17
-
-ninja
-
-export PYTHONPATH=/home/forde_a_smith/risk_swig/build/OREAnalytics-SWIG/Python
-cd ../
-cd /OREAnalytics/Python/Examples
-python3 ore.py
-
-
+echo "Done"

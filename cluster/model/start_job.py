@@ -1,7 +1,6 @@
 # export GOOGLE_APPLICATION_CREDENTIALS=/Users/fordesmith/Documents/prjts/gcp_cluster/vannarho-9ce81e1e196e.json
 
-from pyspark import SparkConf, SparkContext
-from pyspark.sql import SparkSession
+
 import sys
 import os
 from risk_helper import RiskEngine
@@ -34,9 +33,6 @@ def upload_blob(bucket_name, source_dir, destination_blob_folder,storage_client)
 
 
 def main(job_date, cpty):
-    conf = SparkConf().setAppName('risk_job' + '_' + job_date + '_' + cpty)
-    sc = SparkContext(conf=conf)
-    spark = SparkSession(sc)
     base_path = os.getcwd() + "/"
     os.makedirs("Input", mode=0o777, exist_ok=False)
     os.makedirs("Market", mode=0o777, exist_ok=False)

@@ -59,8 +59,8 @@ submit-ssh:
 	@echo "creating job list for $(job_date)"
 	gsutil cp gs://pfe_job_specs/$(job_date)/job_list.txt ./htcondor/
 	@echo "  - copying the datafiles"
-	gcloud compute ssh condor-submit --command "gsutil cp ./model/* ."
-	gcloud compute ssh condor-submit --command "gsutil cp ./htcondor/* ."
+	gcloud compute scp --recurse condor-submit:/home/forde_a_smith /model
+	gcloud compute scp ./model/* condor-submit
 	@echo "\n"
 	@echo "done..."
 	@echo "now just sshing"
@@ -73,5 +73,8 @@ createjoblist:
 	@echo "done..."
 
 
-clean:
-	rm link.file WIKI_PRICES*.zip WIKI_PRICES*.csv 
+setup:
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit
+	git clone https://github.com/fordesmith/risk_engine_cluster.git source
+
+
