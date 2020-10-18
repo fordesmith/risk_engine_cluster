@@ -16,7 +16,7 @@ condor-master condor-compute condor-submit:
 	   gcloud beta compute instances create $@-template \
 	     --project vannarho \
 	     --zone us-east1-b \
-	     --source-machine-image projects/vannarho/global/machineImages/c7-re-img ;\
+	     --source-machine-image projects/vannarho/global/machineImages/c7-img-2 ;\
 	   echo "" ;\
 	   echo "- starting bootstrap $@" ;\
 	   echo ""; \

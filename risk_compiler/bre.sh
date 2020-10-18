@@ -31,20 +31,6 @@ yum groupinstall -y 'Development Tools'
 
 yum clean all
 
-yes | pip3 install ipywidgets \
-        pandas \
-        matplotlib \
-        jupyter \
-        bqplot \
-        pythreejs \
-        wheel \
-        pyspark \
-        jupyter_dashboards \
-        six
-
-
-jupyter_dashboards quick-setup --sys-prefix
-
 
 # ----------------------------------------------------------------------
 #              Install Boost 1.63 - later version didn`t work

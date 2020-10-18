@@ -3,16 +3,15 @@
 ### pre-cursors
 yum update -y && yum install -y wget curl net-tools vm python-pandas python-numpy python3-dev python3-pip rpm java-1.8.0-openjdk java-1.8.0-openjdk-devel
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
 yes | pip3 install ipywidgets \
         pandas \
         matplotlib \
-        jupyter \
         bqplot \
         pythreejs \
         wheel \
-        pyspark \
-        google-cloud-storage \
-        six
+        six \
+        google-cloud-storage
 
 
 ### Installing from the Repository
