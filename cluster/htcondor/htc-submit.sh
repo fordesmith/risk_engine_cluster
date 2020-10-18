@@ -1,9 +1,15 @@
 #!/bin/bash
 echo $1 $2
 
-export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
-export PYTHON_LIBRARY=/usr/lib64/libpython3.so
-
+yes | pip3 install ipywidgets \
+        pandas \
+        matplotlib \
+        bqplot \
+        pythreejs \
+        wheel \
+        six \
+        google-cloud-storage
 
 echo "installed py packages"
+
 python3 start_job.py $1 $2
