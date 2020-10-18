@@ -4,8 +4,21 @@
 
 
 # ----------------------------------------------------------------------
+#              Create condor user (without password - naughty)
+# ----------------------------------------------------------------------
+
+echo "create condor user"
+sudo su
+adduser condor
+usermod -aG wheel condor
+passwd -d condor
+su condor
+cd $HOME
+
+# ----------------------------------------------------------------------
 #              Install Dev Tools
 # ----------------------------------------------------------------------
+
 
 echo "Install Devtools"
 yum update -y \
@@ -37,11 +50,32 @@ yum clean all
 # ----------------------------------------------------------------------
 
 echo "Install Boost"
+
+
 wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.gz
 tar -xzf boost_1_*
+rm boost_1_63_0.tar.gz
+
+export WITHPYTHON=/usr/bin/python3.6m
+export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
+export PYTHON_LIBRARY=/usr/lib64/libpython3.so
+export PYTHONROOT=/usr/lib64/python3.6
+export PYTHONVER=3.6
+export PYTHONLIB=/usr/lib64/
+
 cd boost_1_63_0
+
+cat <<EOF > user-config.jam
+using python : 3.6 : /usr/bin/python3 : /usr/include/python3.6m : /usr/lib ;
+EOF
+
+cp ./user-config.jam $HOME/user-config.jam
+
 ./bootstrap.sh --prefix=/opt/boost
+# ./bootstrap.sh --with-python=/usr/local/bin/python3 --with-python-version=3.6 --with-python-root=/usr/lib64/python3.6
 ./b2 install --prefix=/opt/boost --with=all
+
+
 
 export BOOST=/opt/boost/
 export BOOST_LIBS=/opt/boost/lib
