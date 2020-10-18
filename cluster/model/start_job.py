@@ -41,7 +41,7 @@ def main(job_date, cpty):
     storage_client = storage.Client.from_service_account_json('./vannarho-fb3267082c74.json')
 
     risk_engine = RiskEngine(sys.argv[1] if len(sys.argv)>1 else False)
-    risk_engine.risk_exe = '/home/forde_a_smith/risk_engine/build/App/ore'
+    risk_engine.risk_exe = '/home/fordesmith/risk_engine/build/App/ore'
 
 # download params for counterparty
     bucket_name = 'risk_params'
