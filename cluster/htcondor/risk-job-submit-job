@@ -2,7 +2,7 @@
 # htcondor submit script for risk job
 executable              = htc-submit.sh
 arguments               = $(job_date) $(cpty)
-transfer_input_files    = vannarho-fb3267082c74.json
+transfer_input_files    = vannarho-fb3267082c74.json, job_list.txt
 should_transfer_files   = IF_NEEDED
 Transfer_Output_Files   = ""
 when_to_transfer_output = ON_EXIT
