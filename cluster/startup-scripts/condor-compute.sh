@@ -5,7 +5,6 @@ yum update -y && yum install -y wget curl net-tools vm python-pandas python-nump
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 
-
 ### Installing from the Repository
 wget https://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
 rpm --import RPM-GPG-KEY-HTCondor

@@ -53,18 +53,23 @@ destroycluster:
 	gcloud deployment-manager deployments delete condor-cluster
 
 submit-ssh:
-	@echo "before sshing to the submit host, let me copy some of the files there to make"
-	@echo "it easier for you."
-	@echo "  - copying the model"
-	@echo "creating job list for $(job_date)"
-	gsutil cp gs://pfe_job_specs/$(job_date)/job_list.txt ./htcondor/
-	@echo "  - copying the datafiles"
-	gcloud compute scp --recurse condor-submit:/home/forde_a_smith /model
-	gcloud compute scp ./model/* condor-submit
-	@echo "\n"
-	@echo "done..."
-	@echo "now just sshing"
-	gcloud compute ssh condor-submit
+	@echo "upload credentials"
+	gcloud compute scp /Users/fordesmith/Documents/prjts/gcp_creds/nonhashed/vannarho-fb3267082c74.json condor-submit:/home/fordesmith --zone=us-east1-b
+	@echo "ssh to cordor-submit and change to condor user & home directory"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "su condor"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit  --command "cd $HOME"
+	@echo "clone source repo"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "git clone https://github.com/fordesmith/risk_engine_cluster.git source"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "export SUBMIT_ROOT=$(pwd)"
+	@echo "copy files to pwd"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp $SUBMIT_ROOT/source/cluster/htcondor/* $SUBMIT_ROOT"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp $SUBMIT_ROOT/source/cluster/model/* $SUBMIT_ROOT"
+	@echo "submit job"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "condor_submit risk-job-submit-job"
+	timeout 10
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "condor_q"
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cat err.0"
+
 
 createjoblist:
 	@echo "creating job list for $(job_date)"
