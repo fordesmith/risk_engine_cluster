@@ -1,6 +1,8 @@
 # README for GCP Risk Cluster
 
-This directory contains the helper code for compiling the risk engine and for setting up a cluster to calculate portfolio risk using a HT condor cluster. 
+This directory contains the helper code for compiling the risk engine and for setting up a cluster to calculate portfolio risk using a HT condor cluster.
+
+Note: the compile, image creation and cluster set up works, however the HT Condor job doesn't yet run. 
 
 The **risk_compiler** folder has two shell scripts for Debian9 and Centos7.
 
@@ -42,10 +44,10 @@ make createcluster
 ```
 
 
-4. When the process is complete, use the makefile to log into the condor-submit host (this also copies over the key job files), determine how many cores are available in the cluster:
+4. When the process is complete, use the makefile to log into the condor-submit host and determine how many cores are available in the cluster:
 
 ```
-make submit-ssh job_list=XXX (e.g. '09-10-20')
+make submit-ssh job_list=XXX (e.g. '09-10-20') (Note this is currently broken - just SSH in using gcloud)
 condor_status
 ```
 
