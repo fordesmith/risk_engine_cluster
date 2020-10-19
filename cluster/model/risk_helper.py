@@ -219,6 +219,16 @@ class RiskEngine(object):
             exit_code = subprocess.call([self.risk_exe, xml])
         except:
             print_on_console("Error running risk engine")
+            print_on_console("exit code is: " + exit_code)
+            pwd_ = subprocess.run(["pwd"], capture_output=True)
+            dir_ = subprocess.run(["ls", "-l", "/dev/null"], capture_output=True)
+            input_dir_ = subprocess.run(["ls", "-la", "./Input"], capture_output=True)
+            market_dir_ = subprocess.run(["ls", "-la", "./Market"], capture_output=True)
+            print_on_console("pwd is: " + pwd_)
+            print_on_console("pwd content are : " + dir_)
+            print_on_console("Input dir contents are: " + input_dir_)
+            print_on_console("Market dir contents are: " + market_dir_)
+
 
 
 def run_example(example):
