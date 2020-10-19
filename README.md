@@ -2,7 +2,7 @@
 
 This directory contains the helper code for compiling the risk engine and for setting up a cluster to calculate portfolio risk using a HT condor cluster.
 
-Note: the compile, image creation and cluster set up works, however the HT Condor job doesn't yet run. 
+STATUS UPDATE 19 Oct - the compile, image creation and cluster set up works, however the HT Condor job doesn't yet run. 
 
 The **risk_compiler** folder has two shell scripts for Debian9 and Centos7.
 
