@@ -224,10 +224,10 @@ class RiskEngine(object):
             dir_ = subprocess.run(["ls", "-l", "/dev/null"], stdout=PIPE, stderr=PIPE)
             input_dir_ = subprocess.run(["ls", "-la", "./Input"], stdout=PIPE, stderr=PIPE)
             market_dir_ = subprocess.run(["ls", "-la", "./Market"], stdout=PIPE, stderr=PIPE)
-            print_on_console("pwd is: " + pwd_)
-            print_on_console("pwd content are : " + dir_)
-            print_on_console("Input dir contents are: " + input_dir_)
-            print_on_console("Market dir contents are: " + market_dir_)
+            print_on_console("pwd is: " + str(pwd_))
+            print_on_console("pwd content are : " + str(dir_))
+            print_on_console("Input dir contents are: " + str(input_dir_))
+            print_on_console("Market dir contents are: " + str(market_dir_))
 
 
 
