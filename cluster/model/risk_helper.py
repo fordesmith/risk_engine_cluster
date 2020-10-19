@@ -5,6 +5,7 @@ import shutil
 import os
 import sys
 
+from subprocess import PIPE
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker
@@ -219,10 +220,10 @@ class RiskEngine(object):
             exit_code = subprocess.call([self.risk_exe, xml])
         except:
             print_on_console("Error running risk engine")
-            pwd_ = subprocess.run(["pwd"], capture_output=True)
-            dir_ = subprocess.run(["ls", "-l", "/dev/null"], capture_output=True)
-            input_dir_ = subprocess.run(["ls", "-la", "./Input"], capture_output=True)
-            market_dir_ = subprocess.run(["ls", "-la", "./Market"], capture_output=True)
+            pwd_ = subprocess.run(["pwd"], stdout=PIPE, stderr=PIPE)
+            dir_ = subprocess.run(["ls", "-l", "/dev/null"], stdout=PIPE, stderr=PIPE)
+            input_dir_ = subprocess.run(["ls", "-la", "./Input"], stdout=PIPE, stderr=PIPE)
+            market_dir_ = subprocess.run(["ls", "-la", "./Market"], stdout=PIPE, stderr=PIPE)
             print_on_console("pwd is: " + pwd_)
             print_on_console("pwd content are : " + dir_)
             print_on_console("Input dir contents are: " + input_dir_)
