@@ -82,6 +82,9 @@ createjoblist:
 	@echo "\n"
 	@echo "done..."
 
+sh_:
+	gcloud compute scp /Users/fordesmith/Documents/prjts/gcp_creds/nonhashed/vannarho-fb3267082c74.json condor-submit:/home/fordesmith --zone=us-east1-b
+	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit
 
 setup:
 	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "git clone https://github.com/fordesmith/risk_engine_cluster.git source"
