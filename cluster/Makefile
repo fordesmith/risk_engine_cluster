@@ -52,24 +52,29 @@ destroycluster:
 	@echo "destroying the condor cluster"
 	gcloud deployment-manager deployments delete condor-cluster
 
-submit-ssh:
+sub-ssh:
 	@echo "upload credentials"
 	gcloud compute scp /Users/fordesmith/Documents/prjts/gcp_creds/nonhashed/vannarho-fb3267082c74.json condor-submit:/home/fordesmith --zone=us-east1-b
-	@echo "ssh to cordor-submit and change to condor user & home directory"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "su condor"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit  --command "cd $HOME"
-	@echo "clone source repo"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "git clone https://github.com/fordesmith/risk_engine_cluster.git source"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "export SUBMIT_ROOT=$(pwd)"
-	@echo "copy files to pwd"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp $SUBMIT_ROOT/source/cluster/htcondor/* $SUBMIT_ROOT"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp $SUBMIT_ROOT/source/cluster/model/* $SUBMIT_ROOT"
-	@echo "submit job"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "condor_submit risk-job-submit-job"
+	@echo "copy files and submit"
+	gcloud compute ssh \
+		--project=vannarho \
+		--zone=us-east1-b \
+		condor-submit \
+		--command "su condor && \
+		cd $$HOME && \
+		git clone https://github.com/fordesmith/risk_engine_cluster.git source && \
+		export SUBMIT_ROOT=$$(pwd) && \
+		cp $$SUBMIT_ROOT/source/cluster/htcondor/* $$SUBMIT_ROOT && \
+		cp $$SUBMIT_ROOT/source/cluster/model/* $$SUBMIT_ROOT && \
+		condor_submit risk-job-submit-job"
 	timeout 10
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "condor_q"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cat err.0"
-
+	gcloud compute ssh \
+		--project=vannarho \
+		--zone=us-east1-b \
+		condor-submit \
+		--command "cat err.0 && \
+		run.0.log && \
+		cat out.0"
 
 createjoblist:
 	@echo "creating job list for $(job_date)"
