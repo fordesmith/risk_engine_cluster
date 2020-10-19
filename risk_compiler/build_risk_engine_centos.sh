@@ -129,6 +129,6 @@ export PYTHONPATH=/home/forde_a_smith/risk_swig/build/OREAnalytics-SWIG/Python
 cd ../
 cd /OREAnalytics/Python/Examples
 python3 ore.py;
-fi
+
 
 echo "Done"
