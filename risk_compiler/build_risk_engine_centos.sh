@@ -58,6 +58,10 @@ export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
 export PYTHON_LIBRARY=/usr/lib64/libpython3.so
 
 cd boost_1_*
+cat <<EOF > user-config.jam
+using python : 3.6 : /usr/bin/python3 : /usr/include/python3.6m : /usr/lib ;
+EOF
+cp ./user-config.jam $HOME/user-config.jam
 ./bootstrap.sh --prefix=/opt/boost
 ./b2 install --prefix=/opt/boost --with=all
 

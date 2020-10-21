@@ -3,17 +3,7 @@
 # Shell script for compiling risk engine on centos7or8
 
 
-# ----------------------------------------------------------------------
-#              Create condor user (without password - naughty)
-# ----------------------------------------------------------------------
-
-echo "create condor user"
-sudo su
-adduser condor
-usermod -aG wheel condor
-passwd -d condor
-su condor
-cd $HOME
+export _ME_=$(whoami)
 
 # ----------------------------------------------------------------------
 #              Install Dev Tools
@@ -64,15 +54,11 @@ export PYTHONVER=3.6
 export PYTHONLIB=/usr/lib64/
 
 cd boost_1_63_0
-
 cat <<EOF > user-config.jam
 using python : 3.6 : /usr/bin/python3 : /usr/include/python3.6m : /usr/lib ;
 EOF
-
 cp ./user-config.jam $HOME/user-config.jam
-
 ./bootstrap.sh --prefix=/opt/boost
-# ./bootstrap.sh --with-python=/usr/local/bin/python3 --with-python-version=3.6 --with-python-root=/usr/lib64/python3.6
 ./b2 install --prefix=/opt/boost --with=all
 
 
@@ -109,4 +95,10 @@ cmake3 -DBOOST_ROOT=$BOOST -DBOOST_BOOST_LIBRARYDIR=$BOOST_LIBS ..
 make -j4
 ctest3 -j4
 
-
+find /home -type d -exec chmod 777 {} \;
+find /home/$_ME_ -type d -exec chmod 777 {} \;
+find /home/$_ME_ /risk_engine -type d -exec chmod 777 {} \;
+find /home/$_ME_ /risk_engine/App -type d -exec chmod 777 {} \;
+find /home/$_ME_ /risk_engine/build -type d -exec chmod 777 {} \;
+find /home/$_ME_ /risk_engine/build/App -type d -exec chmod 777 {} \;
+find /home/$_ME_ /risk_engine/build/App/ore -type f -exec chmod 777 {} \;
