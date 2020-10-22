@@ -66,7 +66,3 @@ docker exec -d r02 gsutil -m cp gs://risk_params/09-10-20/cpty_01/* ./Input
 docker exec -d r02 gsutil -m cp gs://market_params/09-10-20/* ./Market
 docker exec -d r02 /usr/local/risk_engine/build/App/ore "./Input/ore.xml"
 docker exec -d r02 gsutil -m cp ./Output/* gs://cpty_risk_outputs/09-10-20/cpty_01/
-
-gsutil cp ./Output/* gs://cpty_risk_outputs/$1/$2/
-
-export CLOUDSDK_PYTHON= /usr/bin/python3 /usr/bin/python3.6 /usr/bin/python3.6-config /usr/bin/python3.6m /usr/bin/python3.6m-config /usr/bin/python3.6m-x86_64-config /usr/lib/python3.6 /usr/lib64/python3.6 /usr/include/python3.6m
