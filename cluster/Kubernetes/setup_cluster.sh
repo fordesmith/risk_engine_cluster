@@ -1,9 +1,6 @@
 #!/bin/bash
 
-gcloud container clusters create risk-engine --num-nodes=3
+kubectl apply -f risk-cluster-deployment.yaml
 
-kubectl create deployment risk-engine --image=gcr.io/google-samples/hello-app:1.0
-
-
-
+kubectl apply --cluster='cluster-1' -f test-job.yaml
 
