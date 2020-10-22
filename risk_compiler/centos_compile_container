@@ -95,6 +95,21 @@ RUN find /usr/local/risk_engine/build/App/ore -type f -exec chmod 777 {} \; \
 && find /usr/local -type d -exec chmod 777 {} \; \
 && find /usr -type d -exec chmod 777 {} \;
 
+# ----------------------------------------------------------------------
+#              create shell script to run job
+# ----------------------------------------------------------------------
 
 
-
+RUN printf ' \
+\n #!/bin/bash  \
+\n # Run risk project \
+\n # $1 = job_date, $2 = cpty  \
+\n mkdir Input \
+\n mkdir Market  \
+\n gsutil -m cp gs://risk_params/$1/$2/* ./Input  \
+\n gsutil -m cp gs://market_params/$1/* ./Market  \
+\n /usr/local/risk_engine/build/App/ore "./Input/ore.xml"  \
+\n gsutil cp ./Output/* gs://cpty_risk_outputs/$1/$2/  \
+\n rm Input  \
+\n rm Market  \
+\n rm Output' > /usr/local/run-risk-job.sh
