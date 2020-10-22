@@ -1,7 +1,6 @@
 #!/bin/bash -xe
 
-# Shell script for compiling risk engine on centos7or8
-
+# Shell script for compiling risk engine on centos7
 
 # ----------------------------------------------------------------------
 #              Install Dev Tools
@@ -13,7 +12,6 @@ yum update -y \
         python3-devel \
         python3-pip \
         hdf5-devel \
-        cmake3 \
         git \
         ninja-build \
         swig \
@@ -21,10 +19,17 @@ yum update -y \
         gcc-c++ \
         wget \
         libtool \
+        gcc \
         glibc-devel \
         doxygen \
         graphviz \
-        mlocate
+        libprotobuf-dev \
+        protobuf-compiler \
+        cmake3 \
+        sudo \
+        mlocate \
+        which \
+        curl
 
 yum groupinstall -y 'Development Tools'
 
@@ -41,7 +46,6 @@ yes | pip3 install ipywidgets \
         jupyter_dashboards \
         six
 
-
 jupyter_dashboards quick-setup --sys-prefix
 
 
@@ -49,6 +53,7 @@ jupyter_dashboards quick-setup --sys-prefix
 #              Install Boost 1.63 - later version didn`t work
 # ----------------------------------------------------------------------
 
+cd /usr/local
 echo "Install Boost"
 wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.gz
 tar -xzf boost_1_*
@@ -81,6 +86,7 @@ cd ../
 
 echo "Clone repo"
 
+cd /usr/local
 git clone https://github.com/fordesmith/OpenRiskEngine.git risk_engine
 cd risk_engine
 git submodule init
@@ -118,7 +124,7 @@ export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
 export PYTHON_LIBRARY=/usr/lib64/libpython3.so
 
 export BOOST_ROOT=$BOOST
-export ORE=/home/forde_a_smith/risk_engine
+export ORE=/usr/local/risk_engine
 set LANG and LC ALL to en US.UTF-8
 set LC NUMERIC to C.
 cmake3 -G Ninja \
@@ -129,10 +135,38 @@ cmake3 -G Ninja \
   -D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR \
 ..
 ninja
-export PYTHONPATH=/home/forde_a_smith/risk_swig/build/OREAnalytics-SWIG/Python
+export PYTHONPATH=/usr/local/risk_swig/build/OREAnalytics-SWIG/Python
 cd ../
 cd /OREAnalytics/Python/Examples
-python3 ore.py;
+python3 ore.py
+
+# ----------------------------------------------------------------------
+#              update permissions
+# ----------------------------------------------------------------------
+
+find /usr/local/risk_engine/build/App/ore -type f -exec chmod 777 {} \;
+find /usr/local/risk_engine/build/App -type d -exec chmod 777 {} \;
+find /usr/local/risk_engine/build -type d -exec chmod 777 {} \;
+find /usr/local/risk_engine -type d -exec chmod 777 {} \;
+find /usr/local -type d -exec chmod 777 {} \;
+find /usr -type d -exec chmod 777 {} \;
+
+# ----------------------------------------------------------------------
+#              create shell script to run job
+# ----------------------------------------------------------------------
+
+printf '#!/bin/bash
+# Run risk project
+# $1 = job_date, $2 = cpty
+mkdir Input
+mkdir Market
+gsutil -m cp gs://risk_params/$1/$2/* ./Input
+gsutil -m cp gs://market_params/$1/* ./Market
+/usr/local/risk_engine/build/App/ore "./Input/ore.xml"
+gsutil cp ./Output/* gs://cpty_risk_outputs/$1/$2/
+rm Input
+rm Market
+rm Output ' > /usr/local/run-risk-job.sh
 
 
 echo "Done"
