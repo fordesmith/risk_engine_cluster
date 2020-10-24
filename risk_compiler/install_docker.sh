@@ -22,6 +22,8 @@ sudo docker run hello-world
 
 sudo usermod -aG docker fordesmith
 
+then log out...
+
 docker login --username=fordesmi
 
 docker build -t fordesmi/risk-engine-c7 .

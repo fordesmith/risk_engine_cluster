@@ -106,6 +106,39 @@ make -j17
 ctest3 -j17
 
 
+# ----------------------------------------------------------------------
+#              Make swig - TO DO - FIX
+# ----------------------------------------------------------------------
+
+
+echo "Compiling swig wrappers"
+cd ../../
+git clone https://github.com/fordesmith/ORE-SWIG.git risk_swig
+cd risk_swig
+git submodule init
+git submodule update
+mkdir build
+cd build
+export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
+export PYTHON_LIBRARY=/usr/lib64/libpython3.so
+
+export BOOST_ROOT=$BOOST
+export ORE=/usr/local/risk_engine
+set LANG and LC ALL to en US.UTF-8
+set LC NUMERIC to C.
+cmake3 -G Ninja \
+  -D ORE=$ORE \
+  -D BOOST_ROOT=$BOOST \
+  -D BOOST_LIBRARYDIR=$BOOST_LIBRARYDIR \
+  -D PYTHON_LIBRARY=$PYTHON_LIBRARY \
+  -D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR \
+..
+ninja
+export PYTHONPATH=/usr/local/risk_swig/build/OREAnalytics-SWIG/Python
+cd ../
+cd /OREAnalytics/Python/Examples
+python3 ore.py
+
 
 # ----------------------------------------------------------------------
 #       update permissions to allow all users to execute risk engine
@@ -127,10 +160,10 @@ printf '#!/bin/bash
 # $1 = job_date, $2 = cpty
 mkdir Input
 mkdir Market
-gsutil -m cp gs://risk_params/$1/$2/* ./Input
-gsutil -m cp gs://market_params/$1/* ./Market
+gsutil -m cp gs://risk-params/$1/$2/* ./Input
+gsutil -m cp gs://market-params/$1/* ./Market
 /usr/local/risk_engine/build/App/ore "./Input/ore.xml"
-gsutil cp ./Output/* gs://cpty_risk_outputs/$1/$2/
+gsutil cp ./Output/* gs://cpty-risk-outputs/$1/$2/
 rm Input
 rm Market
 rm Output ' > /usr/local/run-risk-job.sh

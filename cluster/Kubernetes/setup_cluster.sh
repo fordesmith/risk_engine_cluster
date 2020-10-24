@@ -9,3 +9,7 @@ kubectl create deployment risk-server --image=fordesmi/risk-engine-v1
 kubectl apply -f risk-cluster-deployment.yaml
 
 kubectl apply -f t1.yaml
+
+/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin/kubectl create deployment risk-server --image=fordesmi/risk-engine-v1
+
+

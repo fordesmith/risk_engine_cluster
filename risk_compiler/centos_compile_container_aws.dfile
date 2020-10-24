@@ -16,7 +16,8 @@ RUN echo "Install Devtools" \
         swig \
         epel-release \
         gcc-c++
- RUN yum install -y \
+
+RUN yum install -y \
         wget \
         libtool \
         gcc \
@@ -30,25 +31,19 @@ RUN echo "Install Devtools" \
         mlocate \
         which \
         curl
+
 RUN yum groupinstall -y 'Development Tools' \
 && yum clean all \
 && updatedb
 WORKDIR /usr/local
 
 # ----------------------------------------------------------------------
-#              Install gcloud sdk
+#              Install aws sdk
 # ----------------------------------------------------------------------
 
-# Downloading gcloud package
-RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz
-
-# Installing the package
-RUN mkdir -p gcloud \
-  && tar -C ./gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
-  && /usr/local/gcloud/google-cloud-sdk/install.sh
-
-# Adding the package path to local
-ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
 
 # ----------------------------------------------------------------------
 #              Install Boost 1.63 - later version didn`t work
