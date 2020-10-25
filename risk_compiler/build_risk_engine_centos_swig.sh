@@ -14,7 +14,6 @@ yum update -y \
         hdf5-devel \
         git \
         ninja-build \
-        swig3 \
         epel-release \
         gcc-c++ \
         wget \
@@ -29,7 +28,9 @@ yum update -y \
         sudo \
         mlocate \
         which \
-        curl
+        curl \
+        pcre-devel
+
 
 yum groupinstall -y 'Development Tools'
 
@@ -107,12 +108,28 @@ ctest3 -j17
 
 
 # ----------------------------------------------------------------------
-#              Make swig - TO DO - FIX
+#              Install swig 4
+# ----------------------------------------------------------------------
+
+cd /usr/local
+wget https://downloads.sourceforge.net/swig/swig-4.0.2.tar.gz
+tar -xzf swig-4*
+rm swig-4.0.2.tar.gz
+cd swig-4*
+./configure --prefix=/usr \
+            --without-maximum-compile-warnings
+make
+make install
+install -v -m755 -d /usr/share/doc/swig-4.0.2
+cp -v -R Doc/* /usr/share/doc/swig-4.0.2
+
+# ----------------------------------------------------------------------
+#              Make swig python bindings - not yet working
 # ----------------------------------------------------------------------
 
 
 echo "Compiling swig wrappers"
-cd ../../
+cd /usr/local
 git clone https://github.com/fordesmith/ORE-SWIG.git risk_swig
 cd risk_swig
 git submodule init

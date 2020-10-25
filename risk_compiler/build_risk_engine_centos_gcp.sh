@@ -14,7 +14,6 @@ yum update -y \
         hdf5-devel \
         git \
         ninja-build \
-        swig3 \
         epel-release \
         gcc-c++ \
         wget \
@@ -29,7 +28,8 @@ yum update -y \
         sudo \
         mlocate \
         which \
-        curl
+        curl \
+        pcre-devel
 
 yum groupinstall -y 'Development Tools'
 
