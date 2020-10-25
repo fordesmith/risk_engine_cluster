@@ -14,7 +14,7 @@ yum update -y \
         hdf5-devel \
         git \
         ninja-build \
-        swig \
+        swig3 \
         epel-release \
         gcc-c++ \
         wget \
@@ -119,6 +119,7 @@ git submodule init
 git submodule update
 mkdir build
 cd build
+
 export PYTHON_INCLUDE_DIR=/usr/include/python3.6m
 export PYTHON_LIBRARY=/usr/lib64/libpython3.so
 
@@ -164,9 +165,9 @@ gsutil -m cp gs://risk-params/$1/$2/* ./Input
 gsutil -m cp gs://market-params/$1/* ./Market
 /usr/local/risk_engine/build/App/ore "./Input/ore.xml"
 gsutil cp ./Output/* gs://cpty-risk-outputs/$1/$2/
-rm Input
-rm Market
-rm Output ' > /usr/local/run-risk-job.sh
+rm -r Input
+rm -r Market
+rm -r Output ' > /usr/local/run-risk-job.sh
 
 
 echo "Done"

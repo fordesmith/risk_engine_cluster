@@ -27,7 +27,7 @@ then log out...
 docker login --username=fordesmi
 
 docker build -t fordesmi/risk-engine-c7 .
-docker build -t test .
+docker build -t re1 .
 
 
 # docker tag 23ef89761a82 fordesmi/pfe-poc-img:firsttry
@@ -37,11 +37,15 @@ docker commit dafd9b8edb84 boost163_centos7
 docker push boost163_centos7
 docker push latest
 
+docker commit re1 risk-engine
 
 docker tag 47715e3c5d5c fordesmi/risk-engine-c7
 docker push fordesmi/risk-engine-c7
 
 docker run -d fordesmi/risk-engine-c7
+
+docker commit 87c53fd4d5e8 fordesmi/risk-engine:latest
+
 
 docker logs d187fb45022e
 
@@ -52,15 +56,18 @@ docker stop 7d07e46157bd
 docker run -it -d fordesmi/risk-engine-c7
 docker attach r02
 
+docker commit d688e865d8bf risk-engine
+
+
 docker exec -d 85dcce91e677 stop
 
 docker run -it -d fordesmi/risk-engine-c7
 docker exec -d cd905c95fb74 cd /usr/local
 
 docker run --name r01 --rm -i -t fordesmi/risk-engine-v1:latest bash
-docker run --name r02 --rm -i -t -d fordesmi/risk-engine-v1:latest bash
+docker run --name r03 --rm -i -t -d fordesmi/risk-engine:latest bash
 
-docker exec -d r02 bash /usr/local/run-risk-job.sh '09-10-20' 'cpty_01'
+docker exec -d r03 bash /usr/local/run-risk-job.sh '09-10-20' 'cpty_01'
 
 docker exec -d r02 mkdir Input
 docker exec -d r02 mkdir Market

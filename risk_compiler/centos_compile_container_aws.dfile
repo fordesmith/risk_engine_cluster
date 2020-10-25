@@ -13,7 +13,7 @@ RUN echo "Install Devtools" \
         hdf5-devel \
         git \
         ninja-build \
-        swig \
+        swig3 \
         epel-release \
         gcc-c++
 
@@ -105,6 +105,6 @@ RUN printf ' \
 \n gsutil -m cp gs://market_params/$1/* ./Market  \
 \n /usr/local/risk_engine/build/App/ore "./Input/ore.xml"  \
 \n gsutil cp ./Output/* gs://cpty_risk_outputs/$1/$2/  \
-\n rm Input  \
-\n rm Market  \
-\n rm Output' > /usr/local/run-risk-job.sh
+\n rm -r Input  \
+\n rm -r Market  \
+\n rm -r Output' > /usr/local/run-risk-job.sh
