@@ -69,7 +69,7 @@ submit_job:
 		sudo cp ./source/cluster/htcondor/* ./ && \
 		sudo cp ./source/cluster/model/* ./ && \
 		# gsutil cp gs://pfe-job-specs/$(job_date)/job_list.txt ./ && \
-		sudo condor_submit risk-job-submit-job"
+		condor_submit risk-job-submit-job"
 	timeout 120
 	gcloud compute ssh \
 		--project=risk-engine-293410 \
