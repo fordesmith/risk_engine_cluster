@@ -23,6 +23,7 @@ DAEMON_LIST = MASTER, COLLECTOR, NEGOTIATOR, SCHEDD, STARTD
 CONDOR_ADMIN=EMAIL
 ALLOW_WRITE = \$(ALLOW_WRITE),10.240.0.0/16
 CONDOR_HOST=condor-master
+UID_DOMAIN = google.com
 EOF
 
 mv condor_config.local /etc/condor/config.d/

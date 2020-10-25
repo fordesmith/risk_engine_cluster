@@ -63,6 +63,8 @@ submit_job:
 		--zone=us-east1-b \
 		condor-submit \
 		--command "cd /usr/local && \
+		sudo mkdir htc && \
+		cd htc && \
 		sudo git clone https://github.com/fordesmith/risk_engine_cluster.git source && \
 		sudo cp ./source/cluster/htcondor/* ./ && \
 		sudo cp ./source/cluster/model/* ./ && \
