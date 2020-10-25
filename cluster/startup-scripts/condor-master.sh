@@ -24,6 +24,10 @@ CONDOR_ADMIN=EMAIL
 ALLOW_WRITE = \$(ALLOW_WRITE),10.240.0.0/16
 CONDOR_HOST=condor-master
 UID_DOMAIN = google.com
+SUBMIT_ATTRS = RunAsOwner
+RunAsOwner = True
+STARTER_ALLOW_RUNAS_OWNER=TRUE
+TRUST_UID_DOMAIN = True
 EOF
 
 mv condor_config.local /etc/condor/config.d/

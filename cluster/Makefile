@@ -63,12 +63,11 @@ submit_job:
 		--zone=us-east1-b \
 		condor-submit \
 		--command "cd /usr/local && \
-		sudo mkdir htc && \
+		mkdir htc && \
 		cd htc && \
-		sudo git clone https://github.com/fordesmith/risk_engine_cluster.git source && \
-		sudo cp ./source/cluster/htcondor/* ./ && \
-		sudo cp ./source/cluster/model/* ./ && \
-		# gsutil cp gs://pfe-job-specs/$(job_date)/job_list.txt ./ && \
+		git clone https://github.com/fordesmith/risk_engine_cluster.git source && \
+		cp ./source/cluster/htcondor/* ./ && \
+		cp ./source/cluster/model/* ./ && \
 		condor_submit risk-job-submit-job"
 	timeout 120
 	gcloud compute ssh \
