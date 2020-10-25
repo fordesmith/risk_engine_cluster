@@ -14,9 +14,9 @@ condor-master condor-compute condor-submit:
 	   echo "- building $@" ;\
 	   echo ""; \
 	   gcloud beta compute instances create $@-template \
-	     --project vannarho \
+	     --project risk-engine-293410 \
 	     --zone us-east1-b \
-	     --source-machine-image projects/vannarho/global/machineImages/c7-condor-img ;\
+	     --source-machine-image projects/risk-engine-293410/global/machineImages/risk-engine-img-251020 ;\
 	   echo "" ;\
 	   echo "- starting bootstrap $@" ;\
 	   echo ""; \
@@ -52,33 +52,34 @@ destroycluster:
 	@echo "destroying the condor cluster"
 	gcloud deployment-manager deployments delete condor-cluster
 
-sub-ssh:
-	@echo "upload credentials"
-	gcloud compute scp /Users/fordesmith/Documents/prjts/gcp_creds/nonhashed/vannarho-fb3267082c74.json condor-submit:/home/fordesmith --zone=us-east1-b
+submit_job:
+	# @echo "creating job list for $(job_date)"
+	# gsutil cp gs://pfe-job-specs/$(job_date)/job_list.txt ./htcondor/
+	# @echo "\n"
+	# @echo "done..."
 	@echo "copy files and submit"
 	gcloud compute ssh \
-		--project=vannarho \
+		--project=risk-engine-293410 \
 		--zone=us-east1-b \
 		condor-submit \
-		--command "su condor && \
-		cd $$HOME && \
-		git clone https://github.com/fordesmith/risk_engine_cluster.git source && \
-		export SUBMIT_ROOT=$$(pwd) && \
-		cp $$SUBMIT_ROOT/source/cluster/htcondor/* $$SUBMIT_ROOT && \
-		cp $$SUBMIT_ROOT/source/cluster/model/* $$SUBMIT_ROOT && \
-		condor_submit risk-job-submit-job"
-	timeout 10
+		--command "cd /usr/local && \
+		sudo git clone https://github.com/fordesmith/risk_engine_cluster.git source && \
+		sudo cp ./source/cluster/htcondor/* ./ && \
+		sudo cp ./source/cluster/model/* ./ && \
+		# gsutil cp gs://pfe-job-specs/$(job_date)/job_list.txt ./ && \
+		sudo condor_submit risk-job-submit-job"
+	timeout 120
 	gcloud compute ssh \
-		--project=vannarho \
-		--zone=us-east1-b \
+		--project=risk-engine-293410 \
+		--zone=us-east1-b
 		condor-submit \
-		--command "cat err.0 && \
+		--command "cd /usr/local && cat err.0 && \
 		run.0.log && \
 		cat out.0"
 
 createjoblist:
 	@echo "creating job list for $(job_date)"
-	gsutil cp gs://pfe_job_specs/$(job_date)/job_list.txt ./htcondor/
+	gsutil cp gs://pfe-job-specs/$(job_date)/job_list.txt ./htcondor/
 	@echo "\n"
 	@echo "done..."
 

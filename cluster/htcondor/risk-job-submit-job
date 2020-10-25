@@ -1,8 +1,8 @@
 
 # htcondor submit script for risk job
 executable              = htc-submit.sh
-#arguments               = $(job_date) $(cpty)
-transfer_input_files    = job_list.txt
+arguments               = $(job_date) $(cpty)
+transfer_input_files    = ""
 should_transfer_files   = IF_NEEDED
 Transfer_Output_Files   = ""
 when_to_transfer_output = ON_EXIT
@@ -10,5 +10,4 @@ log                     = run.$(Process).log
 Error   = err.$(Process)                                                
 Output  = out.$(Process) 
 
-#queue job_date,cpty from job_list.txt
-queue
+queue job_date,cpty from job_list.txt
