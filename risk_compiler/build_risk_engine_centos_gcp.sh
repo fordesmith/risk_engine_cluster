@@ -129,7 +129,7 @@ mkdir Market
 gsutil -m cp gs://risk-params/$1/$2/* ./Input
 gsutil -m cp gs://market-params/$1/* ./Market
 /usr/local/risk_engine/build/App/ore "./Input/ore.xml"
-gsutil cp ./Output/* gs://cpty-risk-outputs/$1/$2/
+gsutil -m cp ./Output/* gs://cpty-risk-outputs/$1/$2/
 rm -r Input
 rm -r Market
 rm -r Output ' > /usr/local/run-risk-job.sh
