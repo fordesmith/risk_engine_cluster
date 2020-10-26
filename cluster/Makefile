@@ -69,12 +69,22 @@ submit_job:
 		cp ./source/cluster/htcondor/* ./ && \
 		cp ./source/cluster/model/* ./ && \
 		condor_submit risk-job-submit-job"
-	timeout 120
+		@echo "submitted"
+		timeout 5
+		@echo "check status"
+		gcloud compute ssh \
+		--project=risk-engine-293410 \
+		--zone=us-east1-b \
+		condor-submit \
+		--command "condor_q"
+
+
+status:
 	gcloud compute ssh \
 		--project=risk-engine-293410 \
 		--zone=us-east1-b
 		condor-submit \
-		--command "cd /usr/local && cat err.0 && \
+		--command "cd /usr/local/htc && cat err.0 && \
 		run.0.log && \
 		cat out.0"
 
