@@ -75,7 +75,7 @@ status:
 		--project=risk-engine-293410 \
 		--zone=us-east1-b \
 		condor-submit \
-		--command "condor_q"
+		--command "condor_q && condor_status"
 
 createjoblist:
 	@echo "creating job list for $(job_date)"
