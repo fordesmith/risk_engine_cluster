@@ -70,7 +70,9 @@ submit_job:
 		cp ./source/cluster/model/* ./ && \
 		condor_submit risk-job-submit-job"
 		@echo "submitted"
-		timeout 5
+
+
+status:
 		@echo "check status"
 		gcloud compute ssh \
 		--project=risk-engine-293410 \
@@ -78,21 +80,22 @@ submit_job:
 		condor-submit \
 		--command "condor_q"
 
-
-status:
-	gcloud compute ssh \
-		--project=risk-engine-293410 \
-		--zone=us-east1-b
-		condor-submit \
-		--command "cd /usr/local/htc && cat err.0 && \
-		run.0.log && \
-		cat out.0"
-
 createjoblist:
 	@echo "creating job list for $(job_date)"
 	gsutil cp gs://pfe-job-specs/$(job_date)/job_list.txt ./htcondor/
 	@echo "\n"
 	@echo "done..."
+
+cleanup:
+	@echo "remove temp files"
+	gcloud compute ssh \
+		--project=risk-engine-293410 \
+		--zone=us-east1-b \
+		condor-submit \
+		--command "sudo rm -r /usr/local/htc"
+	@echo "done..."
+
+
 
 sh_:
 	gcloud compute scp /Users/fordesmith/Documents/prjts/gcp_creds/nonhashed/vannarho-fb3267082c74.json condor-submit:/home/fordesmith --zone=us-east1-b

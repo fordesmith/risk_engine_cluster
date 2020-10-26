@@ -27,6 +27,9 @@ RunAsOwner = True
 STARTER_ALLOW_RUNAS_OWNER=TRUE
 TRUST_UID_DOMAIN = True
 
+NUM_SLOTS_TYPE_1
+SLOT_TYPE_1 = c=100%, m=100%, v=100%, d=100%
+
 EOF
 
 mv condor_config.local /etc/condor/config.d/
