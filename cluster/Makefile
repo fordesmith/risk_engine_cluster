@@ -53,8 +53,7 @@ destroycluster:
 	gcloud deployment-manager deployments delete condor-cluster
 
 submit_job:
-
-	@echo "copy files and submit"
+	@echo "copy input files and submit jobs"
 	gcloud compute ssh \
 		--project=risk-engine-293410 \
 		--zone=us-east1-b \
@@ -67,7 +66,6 @@ submit_job:
 		cp ./source/cluster/model/* ./ && \
 		condor_submit risk-job-submit-job"
 		@echo "submitted"
-
 
 status:
 		@echo "check status"
@@ -83,8 +81,10 @@ createjoblist:
 	@echo "\n"
 	@echo "done..."
 
-cleanup:
-	@echo "remove temp files"
+rerun: cleanup-submit-svr cleanup-buckets submit_job
+
+cleanup-submit-svr:
+	@echo "remove temp files on condor-submit"
 	gcloud compute ssh \
 		--project=risk-engine-293410 \
 		--zone=us-east1-b \
@@ -92,18 +92,12 @@ cleanup:
 		--command "sudo rm -r /usr/local/htc"
 	@echo "done..."
 
+cleanup-buckets:
+	gsutil -m rm -r gs://cpty-risk-outputs/09-10-20/
 
 
 sh_:
 	gcloud compute scp /Users/fordesmith/Documents/prjts/gcp_creds/nonhashed/vannarho-fb3267082c74.json condor-submit:/home/fordesmith --zone=us-east1-b
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit
-
-setup:
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "git clone https://github.com/fordesmith/risk_engine_cluster.git source"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "export SUBMIT_ROOT=$(pwd)"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp $SUBMIT_ROOT/source/cluster/htcondor/* $SUBMIT_ROOT"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "cp $SUBMIT_ROOT/source/cluster/model/* $SUBMIT_ROOT"
-	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit --command "sudo cp /home/forde_a_smith/vannarho-fb3267082c74.json $SUBMIT_ROOT"
 	gcloud compute ssh --project=vannarho --zone=us-east1-b condor-submit
 
 
