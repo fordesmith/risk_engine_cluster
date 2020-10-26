@@ -53,10 +53,7 @@ destroycluster:
 	gcloud deployment-manager deployments delete condor-cluster
 
 submit_job:
-	# @echo "creating job list for $(job_date)"
-	# gsutil cp gs://pfe-job-specs/$(job_date)/job_list.txt ./htcondor/
-	# @echo "\n"
-	# @echo "done..."
+
 	@echo "copy files and submit"
 	gcloud compute ssh \
 		--project=risk-engine-293410 \

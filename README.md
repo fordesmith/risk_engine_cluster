@@ -44,17 +44,9 @@ make createcluster
 ```
 
 
-4. When the process is complete, use the makefile to log into the condor-submit host and determine how many cores are available in the cluster:
+4. When the process is complete, use the makefile submit the job to htcondor-submit host and check status
 
 ```
-make submit-ssh job_list=XXX (e.g. '09-10-20') (Note this is currently broken - just SSH in using gcloud)
-condor_status
-```
-
-
-5. Submit the job to htcondor-submit host - At any time, you can check on the status of your jobs with the condor_q command:
-
-```
-condor_submit risk-job-submit-job
-condor_q
+make submit_job
+make status
 ```
