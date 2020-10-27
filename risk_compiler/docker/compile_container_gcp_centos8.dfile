@@ -1,41 +1,42 @@
 FROM centos:8
 
+MAINTAINER vannarho
+LABEL Description="Compile risk engine on centos 8 using boost"
+
+
 # ----------------------------------------------------------------------
 #              Install Dev Tools
 # ----------------------------------------------------------------------
 
 RUN echo "Install Devtools" \
-&& yum groups mark convert \
 && yum update -y \
 && yum install -y \
         python3-devel \
         python3-pip \
         git \
-        ninja-build \
         epel-release \
         gcc-c++ \
-        libbz2-dev \
+        libzip-devel \
         autoconf \
-        libtool \
-        build-essential
+        libtool
 
- RUN yum install -y \
+RUN yum install -y \
         wget \
         libtool \
         gcc \
         glibc-devel \
-        doxygen \
         graphviz \
-        libprotobuf-dev \
-        protobuf-compiler \
         cmake3 \
         sudo \
-        mlocate \
         which \
-        curl
+        curl \
+        yum-utils
+
+RUN dnf config-manager --set-enabled PowerTools \
+&& dnf -y install doxygen doxygen-latex doxygen-doxywizard
+
 RUN yum groupinstall -y 'Development Tools' \
-&& yum clean all \
-&& updatedb
+&& yum clean all
 WORKDIR /usr/local
 
 # ----------------------------------------------------------------------
@@ -54,7 +55,7 @@ RUN mkdir -p gcloud \
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
 # ----------------------------------------------------------------------
-#              Install Boost 1.63 - later version didn`t work
+#              Install Boost latest
 # ----------------------------------------------------------------------
 
 ARG boost_version=1.72.0
@@ -63,11 +64,9 @@ ARG boost_variant=release
 
 WORKDIR /usr/local
 RUN echo "Install Boost" \
-RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/${boost_dir}.tar.gz \
+    && wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/${boost_dir}.tar.gz \
     && tar xfz ${boost_dir}.tar.gz \
     && rm ${boost_dir}.tar.gz \
-    && cd ${boost_dir} \
-    && ./bootstrap.sh \
     && export WITHPYTHON=/usr/bin/python3.6m \
     && export PYTHON_INCLUDE_DIR=/usr/include/python3.6m \
     && export PYTHON_LIBRARY=/usr/lib64/libpython3.so \
@@ -94,8 +93,8 @@ RUN git clone https://github.com/fordesmith/OpenRiskEngine.git risk_engine \
 && cd build \
 && cmake3 -DBOOST_ROOT=/opt/boost/ -DBOOST_BOOST_LIBRARYDIR=/opt/boost/lib .. \
 && make -j16 \
-&& cd ../  \
-&& find ./risk_engine -mindepth 1 ! -regex '^./risk_engine/build\(/.*\)?' -delete
+&& ctest3 -j17 \
+&& find /usr/local/risk_engine -mindepth 1 ! -regex '^/usr/local/risk_engine/build\(/.*\)?' -delete
 
 # ----------------------------------------------------------------------
 #              update permissions
@@ -112,7 +111,6 @@ RUN find /usr/local/risk_engine/build/App/ore -type f -exec chmod 777 {} \; \
 #              create shell script to run job
 # ----------------------------------------------------------------------
 
-
 RUN printf ' \
 \n #!/bin/bash  \
 \n # Run risk project \
@@ -122,7 +120,7 @@ RUN printf ' \
 \n gsutil -m cp gs://risk-params/$1/$2/* ./Input  \
 \n gsutil -m cp gs://market-params/$1/* ./Market  \
 \n /usr/local/risk_engine/build/App/ore "./Input/ore.xml"  \
-\n gsutil cp ./Output/* gs://cpty-risk-outputs/$1/$2/  \
+\n gsutil -m cp ./Output/* gs://cpty-risk-outputs/$1/$2/  \
 \n rm -r Input  \
 \n rm -r Market  \
 \n rm -r Output' > /usr/local/run-risk-job.sh
