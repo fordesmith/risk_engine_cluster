@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:8
 
 # ----------------------------------------------------------------------
 #              Install Dev Tools
@@ -10,12 +10,15 @@ RUN echo "Install Devtools" \
 && yum install -y \
         python3-devel \
         python3-pip \
-        hdf5-devel \
         git \
         ninja-build \
-        swig3 \
         epel-release \
-        gcc-c++
+        gcc-c++ \
+        libbz2-dev \
+        autoconf \
+        libtool \
+        build-essential
+
  RUN yum install -y \
         wget \
         libtool \
@@ -54,21 +57,29 @@ ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 #              Install Boost 1.63 - later version didn`t work
 # ----------------------------------------------------------------------
 
+ARG boost_version=1.72.0
+ARG boost_dir=boost_1_72_0
+ARG boost_variant=release
+
 WORKDIR /usr/local
 RUN echo "Install Boost" \
-&& wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.gz \
-&& tar -xzf boost_1_* \
-&& rm boost_1_63_0.tar.gz \
-&& export WITHPYTHON=/usr/bin/python3.6m \
-&& export PYTHON_INCLUDE_DIR=/usr/include/python3.6m \
-&& export PYTHON_LIBRARY=/usr/lib64/libpython3.so \
-&& export PYTHONROOT=/usr/lib/python3.6 \
-&& export PYTHONVER=3.6 \
-&& export PYTHONLIB=/usr/lib \
-&& cd boost_1_63_0 \
-&& echo "using python : 3.6 : /usr/bin/python3 : /usr/include/python3.6m : /usr/lib ;" >> $HOME/user-config.jam \
-&& ./bootstrap.sh --prefix=/opt/boost  \
-&& ./b2 install --prefix=/opt/boost --with=all
+RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/${boost_dir}.tar.gz \
+    && tar xfz ${boost_dir}.tar.gz \
+    && rm ${boost_dir}.tar.gz \
+    && cd ${boost_dir} \
+    && ./bootstrap.sh \
+    && export WITHPYTHON=/usr/bin/python3.6m \
+    && export PYTHON_INCLUDE_DIR=/usr/include/python3.6m \
+    && export PYTHON_LIBRARY=/usr/lib64/libpython3.so \
+    && export PYTHONROOT=/usr/lib/python3.6 \
+    && export PYTHONVER=3.6 \
+    && export PYTHONLIB=/usr/lib \
+    && cd ${boost_dir} \
+    && echo "using python : 3.6 : /usr/bin/python3 : /usr/include/python3.6m : /usr/lib ;" >> $HOME/user-config.jam \
+    && ./bootstrap.sh --prefix=/opt/boost  \
+    && ./b2 install --prefix=/opt/boost --with=all \
+    && cd /usr/local \
+    && rm -r ${boost_dir}
 
 
 # ----------------------------------------------------------------------
@@ -82,7 +93,9 @@ RUN git clone https://github.com/fordesmith/OpenRiskEngine.git risk_engine \
 && mkdir build \
 && cd build \
 && cmake3 -DBOOST_ROOT=/opt/boost/ -DBOOST_BOOST_LIBRARYDIR=/opt/boost/lib .. \
-&& make -j16
+&& make -j16 \
+&& cd ../  \
+&& find ./risk_engine -mindepth 1 ! -regex '^./risk_engine/build\(/.*\)?' -delete
 
 # ----------------------------------------------------------------------
 #              update permissions
@@ -113,3 +126,5 @@ RUN printf ' \
 \n rm -r Input  \
 \n rm -r Market  \
 \n rm -r Output' > /usr/local/run-risk-job.sh
+
+CMD bash

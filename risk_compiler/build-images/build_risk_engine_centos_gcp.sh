@@ -38,15 +38,10 @@ yum clean all
 yes | pip3 install ipywidgets \
         pandas \
         matplotlib \
-        jupyter \
         bqplot \
         pythreejs \
         wheel \
-        pyspark \
-        jupyter_dashboards \
         six
-
-jupyter_dashboards quick-setup --sys-prefix
 
 
 # ----------------------------------------------------------------------
@@ -69,6 +64,8 @@ EOF
 cp ./user-config.jam $HOME/user-config.jam
 ./bootstrap.sh --prefix=/opt/boost
 ./b2 install --prefix=/opt/boost --with=all
+cd /usr/local
+rm -r boost_1_*
 
 export BOOST=/opt/boost/
 export BOOST_LIBS=/opt/boost/lib
@@ -104,6 +101,8 @@ cd build
 cmake3 -DBOOST_ROOT=$BOOST -DBOOST_BOOST_LIBRARYDIR=$BOOST_LIBS ..
 make -j17
 ctest3 -j17
+cd /usr/local
+find ./risk_engine -mindepth 1 ! -regex '^./risk_engine/build\(/.*\)?' -delete
 
 
 # ----------------------------------------------------------------------
