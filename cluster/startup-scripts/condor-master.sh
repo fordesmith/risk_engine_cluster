@@ -12,7 +12,7 @@ yum install -y apt-transport-https wget curl net-tools vm rpm
 wget https://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
 rpm --import RPM-GPG-KEY-HTCondor
 cd /etc/yum.repos.d
-wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo
+wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel8.repo
 yum install -y condor
 
 mkdir -p /etc/condor/config.d/
@@ -39,8 +39,6 @@ mv condor_config.local /etc/condor/config.d/
 systemctl enable condor
 systemctl start condor
 
-### check status
-#condor_q
-#condor_status
+
 
 

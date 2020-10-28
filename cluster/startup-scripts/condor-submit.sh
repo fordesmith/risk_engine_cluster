@@ -1,13 +1,13 @@
 #!/bin/bash
 
 yum update -y && yum install -y wget curl net-tools vm python-pandas python-numpy python3-dev python3-pip
-yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 
 ### Installing from the Repository
 wget https://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
 rpm --import RPM-GPG-KEY-HTCondor
 cd /etc/yum.repos.d
-wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo
+wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel8.repo
 yum install -y condor
 
 
