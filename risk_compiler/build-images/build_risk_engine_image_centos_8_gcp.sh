@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 echo "Install Devtools" \
-yum update -y \
+&& yum update -y \
 && yum install -y \
         python3-devel \
         python3-pip \
