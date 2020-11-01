@@ -20,14 +20,5 @@
 
    EPE and ENE, compared to European swaption prices 
 
-5) Run Example
 
-   python run.py
-
-6) Run Example via LibreOffice Calc
-
-   a) Install LibreOffice 5.0.6.3 (latest stable)
-
-   b) In this Example_1 directory launch Calc on sheet run.ods with
-      ./launchCalc.sh
          

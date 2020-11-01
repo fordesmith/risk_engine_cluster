@@ -13,7 +13,3 @@
 4) Analytics
 
    EPE without collateral 
-
-5) Run Example
-
-   python run.py

@@ -14,6 +14,4 @@
 
    EPE and ENE, compared to European payer and receiver swaption prices 
 
-5) Run Example
 
-   python run.py

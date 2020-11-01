@@ -94,6 +94,14 @@ git clone https://github.com/fordesmith/OpenRiskEngine.git risk_engine \
 && ctest3 -j17 \
 && find /usr/local/risk_engine -mindepth 1 ! -regex '^/usr/local/risk_engine/build\(/.*\)?' -delete
 
+
+# ----------------------------------------------------------------------
+#             install python modules
+# ----------------------------------------------------------------------
+
+yes | pip3 install pandas matplotlib
+
+
 # ----------------------------------------------------------------------
 #              update permissions
 # ----------------------------------------------------------------------
@@ -117,8 +125,11 @@ printf ' \
 \n mkdir Market  \
 \n gsutil -m cp gs://risk-params/$1/$2/* ./Input  \
 \n gsutil -m cp gs://market-params/$1/* ./Market  \
-\n /usr/local/risk_engine/build/App/ore "./Input/ore.xml"  \
+\n cp ./Input/*.py ./ \
+\n cp ./Market/*.py ./ \
+\n python3 run.py \
 \n gsutil -m cp ./Output/* gs://cpty-risk-outputs/$1/$2/  \
+\n rm -r __* \
 \n rm -r Input  \
 \n rm -r Market  \
 \n rm -r Output' > /usr/local/run-risk-job.sh
