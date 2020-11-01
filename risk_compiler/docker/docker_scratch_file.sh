@@ -28,12 +28,18 @@ docker login --username=fordesmi
 docker build -t py1 .
 
 # docker run --name r03 --rm -i -t -d fordesmi/risk-engine:latest bash
-docker run --name r01 --rm -i -t -d py1
+docker run --name r01 --rm -i -t -d --cpus="15" fordesmi/risk-engine
 
-docker exec -d r01 bash /usr/local/run-risk-job.sh '09-10-20' 'cpty_01'
+docker exec -d r01 bash /usr/local/run-risk-job.sh '09-10-20' 'cpty_04'
 
 docker tag py1 fordesmi/risk-engine
 docker push fordesmi/risk-engine
+
+docker pull fordesmi/risk-engine
+
+docker attach r01
+
+--cpus="15"
 
 
 

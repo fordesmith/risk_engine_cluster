@@ -2,7 +2,7 @@
 
 import os
 import runpy
-ore_helpers = runpy.run_path(os.path.join(os.path.dirname(os.getcwd()), "risk_engine-helper.py"))
+ore_helpers = runpy.run_path(os.path.join(os.path.dirname(os.getcwd()), "risk_helper.py"))
 RiskEngine = ore_helpers['OreExample']
 
 import sys

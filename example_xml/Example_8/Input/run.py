@@ -2,7 +2,7 @@
 
 import sys
 sys.path.append('../')
-from risk_engine-helperimport RiskEngine
+from risk_helperimport RiskEngine
 
 risk_engine = RiskEngine(sys.argv[1] if len(sys.argv)>1 else False)
 
