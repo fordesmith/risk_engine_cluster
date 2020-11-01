@@ -16,7 +16,7 @@ condor-master condor-compute condor-submit:
 	   gcloud beta compute instances create $@-template \
 	     --project risk-engine-293410 \
 	     --zone us-east1-b \
-	     --source-machine-image projects/risk-engine-293410/global/machineImages/risk-engine-img-251020 ;\
+	     --source-machine-image projects/risk-engine-293410/global/machineImages/c8-4cpu-py-risk-engine ;\
 	   echo "" ;\
 	   echo "- starting bootstrap $@" ;\
 	   echo ""; \
