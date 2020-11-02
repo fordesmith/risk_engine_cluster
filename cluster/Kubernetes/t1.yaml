@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  # Unique key of the Job instance
+  name: risk-engine-v1a-job
+spec:
+  template:
+    metadata:
+      name: risk-engine-v1a-job
+    spec:
+      containers:
+      - name: risk-engine
+        image: fordesmi/risk-engine
+        command:
+        - "bash"
+        - "/usr/local/run-risk-job.sh"
+        - "09-10-20"
+        - "cpty_01"
+      # Do not restart containers after they exit
+      restartPolicy: Never
+  # of retries before marking as failed.
+  backoffLimit: 4
