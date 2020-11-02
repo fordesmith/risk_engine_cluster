@@ -128,7 +128,7 @@ printf ' \
 \n cp ./Input/*.py ./ \
 \n cp ./Market/*.py ./ \
 \n python3 run.py \
-\n gsutil -m cp ./Output/* gs://cpty-risk-outputs/$1/$2/  \
+\n gsutil -m cp -r ./Output/* gs://cpty-risk-outputs/$1/$2/  \
 \n rm -r __* \
 \n rm -r Input  \
 \n rm -r Market  \

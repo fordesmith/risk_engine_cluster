@@ -1,63 +1,74 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: re-j01
-  labels:
-    jobgroup: re
+  # Unique key of the Job instance
+  name: risk-engine-v1-job
 spec:
   template:
     metadata:
-      name: re-j01
-      labels:
-        jobgroup: re
+      name: risk-engine-v1-job
     spec:
       containers:
-      - name: fordesmi
-        image: risk-engine-v1
-        command: ["bash /usr/local/run-risk-job.sh '09-10-20' 'cpty_01'"]
+      - name: risk-engine
+        image: fordesmi/risk-engine
+        command:
+        - "bash"
+        - "/usr/local/run-risk-job.sh"
+        - "09-10-20"
+        - "cpty_01"
+      # Do not restart containers after they exit
       restartPolicy: Never
+  # of retries before marking as failed.
+  backoffLimit: 4
 
 ---
 
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: re-j02
-  labels:
-    jobgroup: re
+  # Unique key of the Job instance
+  name: risk-engine-v2-job
 spec:
   template:
     metadata:
-      name: re-j02
-      labels:
-        jobgroup: re
+      name: risk-engine-v2-job
     spec:
       containers:
-      - name: fordesmi
-        image: risk-engine-v1
-        command: ["bash /usr/local/run-risk-job.sh '09-10-20' 'cpty_02'"]
+      - name: risk-engine
+        image: fordesmi/risk-engine
+        command:
+        - "bash"
+        - "/usr/local/run-risk-job.sh"
+        - "09-10-20"
+        - "cpty_02"
+      # Do not restart containers after they exit
       restartPolicy: Never
+  # of retries before marking as failed.
+  backoffLimit: 4
 
 ---
-
 
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: re-j03
-  labels:
-    jobgroup: re
+  # Unique key of the Job instance
+  name: risk-engine-v3-job
 spec:
   template:
     metadata:
-      name: re-j03
-      labels:
-        jobgroup: re
+      name: risk-engine-v3-job
     spec:
       containers:
-      - name: fordesmi
-        image: risk-engine-v1
-        command: ["bash /usr/local/run-risk-job.sh '09-10-20' 'cpty_03'"]
+      - name: risk-engine
+        image: fordesmi/risk-engine
+        command:
+        - "bash"
+        - "/usr/local/run-risk-job.sh"
+        - "09-10-20"
+        - "cpty_03"
+      # Do not restart containers after they exit
       restartPolicy: Never
+  # of retries before marking as failed.
+  backoffLimit: 4
 
 ---

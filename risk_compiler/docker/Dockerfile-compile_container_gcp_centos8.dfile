@@ -3,7 +3,6 @@ FROM centos:8
 MAINTAINER vannarho
 LABEL Description="Compile risk engine on centos 8 using boost"
 
-
 # ----------------------------------------------------------------------
 #              Install Dev Tools
 # ----------------------------------------------------------------------
@@ -18,9 +17,7 @@ RUN echo "Install Devtools" \
         gcc-c++ \
         libzip-devel \
         autoconf \
-        libtool
-
-RUN yum install -y \
+        libtool \
         wget \
         libtool \
         gcc \
@@ -40,16 +37,16 @@ RUN yum groupinstall -y 'Development Tools' \
 WORKDIR /usr/local
 
 # ----------------------------------------------------------------------
-#              Install gcloud sdk
+#              Install gcloud sdk - now just using gsutils to save space
 # ----------------------------------------------------------------------
 
-# Downloading gcloud package
+#Downloading gcloud package
 RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz
 
 # Installing the package
 RUN mkdir -p gcloud \
-  && tar -C ./gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
-  && /usr/local/gcloud/google-cloud-sdk/install.sh
+&& tar -C ./gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
+&& /usr/local/gcloud/google-cloud-sdk/install.sh
 
 # Adding the package path to local
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
@@ -114,6 +111,24 @@ RUN find /usr/local/risk_engine/build/App/ore -type f -exec chmod 777 {} \; \
 
 RUN yes | pip3 install pandas matplotlib
 
+
+# ----------------------------------------------------------------------
+#              remove unwanted files
+# ----------------------------------------------------------------------
+
+RUN yum remove -y --skip-broken \
+    epel-release  \
+    gcc-c++ \
+    libzip-devel \
+    autoconf \
+    libtool \
+    wget \
+    gcc \
+    glibc-devel \
+    cmake3 \
+    yum-utils
+
+
 # ----------------------------------------------------------------------
 #              create shell script to run job
 # ----------------------------------------------------------------------
@@ -129,7 +144,7 @@ RUN printf ' \
 \n cp ./Input/*.py ./ \
 \n cp ./Market/*.py ./ \
 \n python3 run.py \
-\n gsutil -m cp ./Output/* gs://cpty-risk-outputs/$1/$2/  \
+\n gsutil -m cp -r ./Output/* gs://cpty-risk-outputs/$1/$2/  \
 \n rm -r __* \
 \n rm -r Input  \
 \n rm -r Market  \
