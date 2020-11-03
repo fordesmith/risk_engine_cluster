@@ -1,12 +1,12 @@
 # README for GCP Risk Cluster
 
-This directory contains the helper code for compiling the risk engine and for setting up a cluster to calculate portfolio risk using a HT condor cluster.
+This directory contains the helper code for compiling the risk engine and for setting up a cluster to calculate portfolio risk; both Kubernetes and HT condor cluster configs are included. 
 
-STATUS UPDATE - working on a Kubernetes cluster deployment (not working yet).
+The **Kubernetes** folder has scripts for creating a container, setting up a cluster, launching a deployment and adding jobs. 
 
 The **risk_compiler** folder has a both a shell script for compiling Boost, QuantLib and ORE on Centos 8 (for HT Condor) and a Dockerfile (for Kubernetes)
 
-The **cluster** folder has a makefile that drives most of the commands you perform. The commands in the makefile are mostly wrappers around gcloud commands. The sample code has directories for the following:
+The **HTCondor_cluster** folder has a makefile that drives most of the commands you perform. The commands in the makefile are mostly wrappers around gcloud commands. The sample code has directories for the following:
 
 * deploymentmanager/:  holds the Deployment Manager templates for creating and launching the HTCondor compute cluster.
 
@@ -14,7 +14,9 @@ The **cluster** folder has a makefile that drives most of the commands you perfo
 
 * startup-scripts/:  holds additional scripts for creating the necessary system images for the compute cluster (based on Centos 8).
 
-Key steps, once the code has been compiled, a machine image has been created and you have the gcloud sdk and a service account:
+* htcondor/: the files to submit the job
+
+For HT Condor, the key steps, once the code has been compiled, a machine image has been created and you have the gcloud sdk and a service account:
 
 1. Clone the GitHub repository that contains the sample code and change directories to the folder the repository was cloned to:
 
