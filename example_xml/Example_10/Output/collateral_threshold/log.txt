@@ -1,0 +1,2 @@
+WARNING  [2020-Nov-03 09:49:00.312217] (...rketdata/security.cpp:80) : No security-specific cpr found for Security/SECURITY_1
+WARNING  [2020-Nov-03 09:49:00.312779] (...rketdata/security.cpp:82) : No security-specific price found for Security/SECURITY_1

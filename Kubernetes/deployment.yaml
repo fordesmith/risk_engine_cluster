@@ -1,0 +1,48 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  name: "re1"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "risk-engine"
+  namespace: "re1"
+  labels:
+    app: "risk-engine"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "risk-engine"
+  template:
+    metadata:
+      labels:
+        app: "risk-engine"
+    spec:
+      containers:
+      - name: "risk-engine"
+        image: "fordesmi/risk-engine:latest"
+        stdin: true
+        tty: true
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "risk-engine-hpa-gqyi"
+  namespace: "re1"
+  labels:
+    app: "risk-engine"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "risk-engine"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80

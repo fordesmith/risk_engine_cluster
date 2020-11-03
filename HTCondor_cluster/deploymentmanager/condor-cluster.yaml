@@ -1,0 +1,14 @@
+
+
+imports:
+- path: condor.jinja
+
+resources:
+- name: condor-HTCondor_cluster
+  type: condor.jinja
+  properties:
+    count: 2
+    pvmcount: 2
+    zone: us-east1-b
+    email: someone@somewhere.com
+    instancetype: e2-highmem-4
