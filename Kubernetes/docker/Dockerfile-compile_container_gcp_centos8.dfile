@@ -37,7 +37,7 @@ RUN yum groupinstall -y 'Development Tools' \
 WORKDIR /usr/local
 
 # ----------------------------------------------------------------------
-#              Install gcloud sdk - now just using gsutils to save space
+#              Install gcloud sdk
 # ----------------------------------------------------------------------
 
 #Downloading gcloud package
