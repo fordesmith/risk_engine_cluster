@@ -4,9 +4,9 @@ This directory contains the helper code for compiling the risk engine and for se
 
 The **Kubernetes** folder has scripts for creating a container, setting up a cluster, launching a deployment and adding jobs. 
 
-The **risk_compiler** folder has a both a shell script for compiling Boost, QuantLib and ORE on Centos 8 (for HT Condor) and a Dockerfile (for Kubernetes)
-
 The **HTCondor_cluster** folder has a makefile that drives most of the commands you perform. The commands in the makefile are mostly wrappers around gcloud commands. The sample code has directories for the following:
+
+* risk_compiler/:  has a shell script for compiling Boost, QuantLib and ORE on Centos 8 (for HT Condor) ...for creating the machine image
 
 * deploymentmanager/:  holds the Deployment Manager templates for creating and launching the HTCondor compute cluster.
 
