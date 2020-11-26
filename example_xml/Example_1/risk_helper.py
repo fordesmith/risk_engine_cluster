@@ -37,8 +37,8 @@ class RiskEngine(object):
     def _locate_risk_exe(self):
         if os.path.isfile("/usr/local/risk_engine/build/App/ore"):
             self.risk_exe = "/usr/local/risk_engine/build/App/ore"
-        elif os.path.isfile("/Users/fordesmith/Documents/prjts/Engine/build/App/ore"):
-            self.risk_exe = "/Users/fordesmith/Documents/prjts/Engine/build/App/ore"
+        elif os.path.isfile("/usr/local/risk_engine/ORE-v1841/build/App/ore"):
+            self.risk_exe = "/usr/local/risk_engine/ORE-v1841/build/App/ore"
         elif os.path.isfile("../../App/ore"):
             self.risk_exe = "../../App/ore"
         else:
